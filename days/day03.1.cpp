@@ -1,6 +1,4 @@
-#include "day03.h"
-
-#include <iostream>
+#include "day03.1.h"
 #include <boost/parser/parser.hpp>
 
 // References:
@@ -11,11 +9,9 @@ namespace parse1
 {
     namespace bp = boost::parser;
 
-    class mul_tag
-    {
-    };
+    class mul_tag{};
 
-    bp::callback_rule<mul_tag, std::tuple<int, int>> mul = "mul";
+    bp::callback_rule<mul_tag, std::tuple<unsigned int, unsigned int>> mul = "mul";
 
     using uint3_parser = bp::uint_parser<unsigned int, 10, 1, 3>;
     inline constexpr bp::parser_interface<uint3_parser> number_{};
@@ -26,29 +22,29 @@ namespace parse1
     );
 }
 
-int Day03::part1()
+unsigned int Day03_1::part1() const
 {
     namespace bp = boost::parser;
 
     struct callbacks
     {
-        mutable int total = 0;
+        mutable unsigned int total = 0;
 
-        void operator()(parse1::mul_tag, std::tuple<int, int> args) const
+        void operator()(parse1::mul_tag, std::tuple<unsigned int, unsigned int> args) const
         {
             auto [a, b] = args;
             total += a * b;
         }
     };
 
-    constexpr callbacks callbacks{};
-    const bool success = bp::callback_parse(input, *(parse1::mul | bp::char_), callbacks);
+    constexpr callbacks cb{};
+    const bool success = bp::callback_parse(input, *(parse1::mul | bp::char_), cb);
     if (!success)
     {
-        throw std::runtime_error("Parsing failed");
+        throw std::runtime_error("Day 3; Part 1: Parsing failed");
     }
 
-    return callbacks.total;
+    return cb.total;
 }
 
 
@@ -56,19 +52,11 @@ namespace parse2
 {
     namespace bp = boost::parser;
 
-    class mul_tag
-    {
-    };
+    class mul_tag{};
+    class do_tag{};
+    class dont_tag{};
 
-    class do_tag
-    {
-    };
-
-    class dont_tag
-    {
-    };
-
-    constexpr bp::callback_rule<mul_tag, std::tuple<int, int>> mul = "mul";
+    constexpr bp::callback_rule<mul_tag, std::tuple<unsigned int, unsigned int>> mul = "mul";
     constexpr bp::callback_rule<do_tag> doo = "do";
     constexpr bp::callback_rule<dont_tag> dont = "don't";
 
@@ -86,14 +74,16 @@ namespace parse2
     );
 }
 
-int Day03::part2()
+unsigned int Day03_1::part2() const
 {
+    namespace bp = boost::parser;
+
     struct callbacks
     {
         mutable bool enabled = true;
-        mutable int total = 0;
+        mutable unsigned int total = 0;
 
-        void operator()(parse2::mul_tag, std::tuple<int, int> args) const
+        void operator()(parse2::mul_tag, std::tuple<unsigned int, unsigned int> args) const
         {
             if (!enabled) return;
 
@@ -112,13 +102,13 @@ int Day03::part2()
         }
     };
 
-    constexpr callbacks callbacks{};
-    constexpr auto parser = *(parse2::mul | parse2::doo | parse2::dont | boost::parser::char_);
-    const bool success = boost::parser::callback_parse(input, parser, callbacks);
+    constexpr callbacks cb{};
+    constexpr auto parser = *(parse2::mul | parse2::doo | parse2::dont | bp::char_);
+    const bool success = bp::callback_parse(input, parser, cb);
     if (!success)
     {
-        throw std::runtime_error("Parsing failed");
+        throw std::runtime_error("Day 3; Part 2; Parsing failed");
     }
 
-    return callbacks.total;
+    return cb.total;
 }

@@ -2,13 +2,14 @@
 #include <boost/parser/parser.hpp>
 #include <ranges>
 #include <range/v3/view/zip.hpp>
+#include <numeric>
 
 namespace
 {
-    std::vector<std::tuple<int, std::string, int>> parse_input(const std::string& input)
+    std::vector<std::tuple<int, int>> parse_input(const std::string& input)
     {
-        auto p = *(boost::parser::int_ >> boost::parser::string("   ") >> boost::parser::int_ >> boost::parser::eol);
-        std::optional<std::vector<std::tuple<int, std::string, int>>> res = boost::parser::parse(input, p);
+        auto p = *(boost::parser::int_ >> "   " >> boost::parser::int_ >> boost::parser::eol);
+        std::optional<std::vector<std::tuple<int, int>>> res = boost::parser::parse(input, p);
 
         if (!res.has_value())
         {
@@ -19,13 +20,13 @@ namespace
     }
 }
 
-int Day01::part1()
+int Day01::part1() const
 {
     const auto input = parse_input(this->input);
 
     // Views over the first and third elements (left and right columns)
     auto left_ids_view = input | std::views::transform([](const auto& t) { return std::get<0>(t); });
-    auto right_ids_view = input | std::views::transform([](const auto& t) { return std::get<2>(t); });
+    auto right_ids_view = input | std::views::transform([](const auto& t) { return std::get<1>(t); });
 
     // Materialize into vectors (lists)
     std::vector<int> left_list(left_ids_view.begin(), left_ids_view.end());
@@ -44,13 +45,13 @@ int Day01::part1()
     return sum;
 }
 
-int Day01::part2()
+int Day01::part2() const
 {
     const auto input = parse_input(this->input);
 
     std::map<int, int> left_counts;
     std::map<int, int> right_counts;
-    for (const auto& [left, _, right] : input)
+    for (const auto& [left, right] : input)
     {
         left_counts[left]++;
         right_counts[right]++;

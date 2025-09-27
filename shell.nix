@@ -11,6 +11,8 @@ pkgs.mkShell {
     pkgs.zsh
   ];
 
+  NIX_ENFORCE_NO_NATIVE=0;
+
   shellHook = ''
     echo Starting ${build_deps.meta.project_name} shell...
   '';

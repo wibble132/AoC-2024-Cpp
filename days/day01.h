@@ -3,15 +3,15 @@
 
 #include "base.h"
 
-class Day01 final : public BaseDay<int, int>
+class Day01 final : public BaseDay
 {
 public:
     explicit Day01() : BaseDay(1)
     {
     }
 
-    int part1() override;
-    int part2() override;
+    [[nodiscard]] int part1() const;
+    [[nodiscard]] int part2() const;
 };
 
 
