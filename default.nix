@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import (fetchTarball("channel:nixos-25.05")) {} }:
 let
   project_name = "AoC-2024";
   build_type = "Debug";
