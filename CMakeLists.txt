@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(AoC-2024)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(BIN_DIR ${CMAKE_SOURCE_DIR}/bin)
 
@@ -24,10 +24,12 @@ add_executable(
         days/day03.1.h
         days/day03.2.cpp
         days/day03.2.h
-        days/day04.cpp
-        days/day04.h
+        # days/day04.cpp
+        # days/day04.h
         days/day05.cpp
         days/day05.h
+        days/day06.cpp
+        days/day06.h
 )
 
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME}

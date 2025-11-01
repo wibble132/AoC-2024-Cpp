@@ -1,7 +1,7 @@
-{ pkgs ? import (fetchTarball("channel:nixos-25.05")) {} }:
+{ pkgs ? import <nixpkgs> {} }:
 let
   project_name = "AoC-2024";
-  build_type = "Debug";
+  build_type = "Release";
 in
 pkgs.stdenv.mkDerivation {
   name = project_name;
@@ -17,7 +17,7 @@ pkgs.stdenv.mkDerivation {
   ];
 
   nativeBuildInputs = with pkgs; [
-    gcc
+    gcc15
     pkg-config
     tree
   ];
@@ -42,4 +42,6 @@ pkgs.stdenv.mkDerivation {
     # Export project_name as an attribute
     project_name = project_name;
   };
+
+  NIX_ENFORCE_NO_NATIVE = false;
 }
