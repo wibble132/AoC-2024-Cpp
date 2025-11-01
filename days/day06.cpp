@@ -7,8 +7,11 @@
 #include <set>
 #include <unordered_set>
 
-typedef std::tuple<int, int> position_t;
-enum class direction_t : uint8_t
+using position_value = int16_t;
+using direction_value = uint8_t;
+
+typedef std::tuple<position_value, position_value> position_t;
+enum class direction_t : direction_value
 {
     Up,
     Right,
@@ -18,14 +21,14 @@ enum class direction_t : uint8_t
 struct input_t
 {
     std::set<position_t> obstacles;
-    int rows;
-    int cols;
+    position_value rows;
+    position_value cols;
     position_t guard_start;
 };
 
 input_t parse_input(const std::string_view &input)
 {
-    int rows = 0, cols = 0;
+    position_value rows = 0, cols = 0;
     position_t guard_position{-1, -1};
     auto result = input
         | std::views::split('\n')
@@ -54,7 +57,7 @@ input_t parse_input(const std::string_view &input)
         | std::views::join
         | std::ranges::to<std::set<position_t>>();
 
-    return {result, rows + 1, cols + 1, guard_position};
+    return {result, rows + (position_value)1, cols + (position_value)1, guard_position};
 }
 
 position_t forward_position(const position_t &current, const direction_t &dir)
@@ -83,7 +86,7 @@ bool in_bounds(const position_t &pos, const input_t &input)
 
 direction_t turn_right(const direction_t &dir)
 {
-    return static_cast<direction_t>((static_cast<uint8_t>(dir) + 1) % 4);
+    return static_cast<direction_t>((static_cast<direction_value>(dir) + 1) % 4);
 }
 
 std::tuple<position_t, direction_t> do_step(const position_t &current_pos, const direction_t &current_dir, const input_t &input)
