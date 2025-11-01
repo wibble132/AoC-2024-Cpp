@@ -27,8 +27,11 @@ input_t parse_input(const std::string_view &input)
 {
     int rows = 0, cols = 0;
     position_t guard_position{-1, -1};
-    auto result = input | std::views::split('\n') | std::views::enumerate | std::views::transform([&cols, &rows, &guard_position](const auto &x)
-                                                                                                  {
+    auto result = input
+        | std::views::split('\n')
+        | std::views::enumerate
+        | std::views::transform([&cols, &rows, &guard_position](const auto &x)
+        {
             const auto &[line_index_ref, line] = x;
             std::size_t line_index = line_index_ref;
             rows = line_index;
@@ -46,8 +49,10 @@ input_t parse_input(const std::string_view &input)
                 | std::views::transform([line_index](const auto& y)
                 {
                     return position_t{std::get<0>(y), line_index};
-                }); }) |
-                  std::views::join | std::ranges::to<std::set<position_t>>();
+                }); 
+        })
+        | std::views::join
+        | std::ranges::to<std::set<position_t>>();
 
     return {result, rows + 1, cols + 1, guard_position};
 }
