@@ -4,3 +4,4 @@ result
 inputs
 bin
 .vscode
+.direnv

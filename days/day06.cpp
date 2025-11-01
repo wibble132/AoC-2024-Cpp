@@ -13,10 +13,10 @@ using direction_value = uint8_t;
 typedef std::tuple<position_value, position_value> position_t;
 enum class direction_t : direction_value
 {
-    Up,
-    Right,
-    Down,
-    Left,
+    Up = 0,
+    Right = 1,
+    Down = 2,
+    Left = 3,
 };
 struct input_t
 {
@@ -57,7 +57,7 @@ input_t parse_input(const std::string_view &input)
         | std::views::join
         | std::ranges::to<std::set<position_t>>();
 
-    return {result, rows + (position_value)1, cols + (position_value)1, guard_position};
+    return {result, (position_value)(rows + 1), (position_value)(cols + 1), guard_position};
 }
 
 position_t forward_position(const position_t &current, const direction_t &dir)
@@ -154,8 +154,6 @@ bool does_loop_2(const input_t &input, std::set<std::tuple<position_t, direction
             return false;
         }
     }
-
-    return false;
 }
 
 int Day06::part2() const
@@ -165,7 +163,7 @@ int Day06::part2() const
     position_t current_position = input.guard_start;
     direction_t current_direction = direction_t::Up;
 
-    // Only includes the states just after turning, to reduce the size
+    // Only includes the states just after turning
     std::set<std::tuple<position_t, direction_t>> visited_states{};
 
     std::set<position_t> attempted_new_obstacles{};
@@ -186,7 +184,7 @@ int Day06::part2() const
             continue;
         }
 
-        // Have we already tried this position as a new obstacle? Move forward
+        // Have we already tried this position as a new obstacle?
         if (attempted_new_obstacles.contains(forward)) {
             current_position = forward;
             continue;

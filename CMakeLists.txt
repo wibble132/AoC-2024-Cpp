@@ -14,6 +14,8 @@ set(CMAKE_CXX_FLAGS "-Wall -fconcepts-diagnostics-depth=4")
 
 add_executable(
         AoC-2024
+        days/day06.2.cpp
+        days/day06.2.h
         main.cpp
         days/base.h
         days/day01.cpp
