@@ -4,7 +4,7 @@
 #include "days/day03.1.h"
 #include "days/day03.2.h"
 #include "days/day05.h"
-#include "days/day06.2.h"
+#include "days/day06.h"
 
 int main()
 {

@@ -1,4 +1,4 @@
-#include "day06.2.h"
+#include "day06.h"
 
 #include <tuple>
 #include <vector>
@@ -65,25 +65,6 @@ namespace
                 return map_tile_t::Empty;
 
             return tiles[pos.y * column_count + pos.x];
-        }
-
-        [[nodiscard]] auto enumerate() const noexcept
-        {
-            return this->tiles | std::views::chunk(this->column_count) | std::views::enumerate | std::views::transform(
-                    [](const auto&& x)
-                    {
-                        const auto& [row_index,row] = x;
-                        return row | std::views::enumerate | std::views::transform([row_index](const auto&& y)
-                        {
-                            const auto& [column_index, tile] = y;
-                            const auto position = position_t{
-                                static_cast<uint8_t>(column_index),
-                                static_cast<uint8_t>(row_index)
-                            };
-                            return std::tuple<position_t, map_tile_t>{position, tile};
-                        });
-                    })
-                | std::views::join;
         }
 
     private:
@@ -226,11 +207,13 @@ void do_step_to_wall(position_t& current_pos, direction_t& current_dir, const in
     current_dir = turn_right(current_dir);
 }
 
-bool does_loop(const input_t& input, std::flat_set<std::tuple<position_t, direction_t>> visited_states)
+bool does_loop(
+    const input_t& input,
+    const position_t& start_position, const direction_t& start_direction,
+    std::flat_set<std::tuple<position_t, direction_t>> &visited_states)
 {
-    visited_states.clear();
-    auto current_position = input.guard_start;
-    auto current_direction = direction_t::Up;
+    position_t current_position = start_position;
+    direction_t current_direction = start_direction;
 
     while (true)
     {
@@ -252,24 +235,30 @@ int Day06_2::part2() const
 {
     auto input = parse_input(this->input);
 
-    int total = 0;
+    std::flat_set<position_t> positions_that_loop {};
+    std::flat_set<std::tuple<position_t, direction_t>> visited_states {};
 
-    // Reuse for every step to avoid repeated allocations
-    const std::flat_set<std::tuple<position_t, direction_t>> visited_states{};
-
-    for (const auto&& [pos, tile] : input.obstacles.enumerate())
+    auto current_position = input.guard_start;
+    auto current_direction = direction_t::Up;
+    while (in_bounds(current_position, input))
     {
-        // Can only place tiles in empty positions
-        if (tile != map_tile_t::Empty)
+        auto [new_position, new_direction] = do_step(current_position, current_direction, input);
+        current_position = new_position;
+        current_direction = new_direction;
+
+        if (positions_that_loop.contains(new_position))
         {
             continue;
         }
 
-        input.obstacles[pos] = map_tile_t::Obstacle;
-        if (does_loop(input, visited_states))
-            total++;
-        input.obstacles[pos] = map_tile_t::Empty;
+        input.obstacles[new_position] = map_tile_t::Obstacle;
+        visited_states.clear();
+        if (does_loop(input, input.guard_start, direction_t::Up, visited_states))
+        {
+            positions_that_loop.insert(new_position);
+        }
+        input.obstacles[new_position] = map_tile_t::Empty;
     }
 
-    return total;
+    return positions_that_loop.size();
 }

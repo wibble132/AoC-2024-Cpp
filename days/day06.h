@@ -1,5 +1,5 @@
-#ifndef AOC_2024_DAY06_2_H
-#define AOC_2024_DAY06_2_H
+#ifndef AOC_2024_DAY06_H
+#define AOC_2024_DAY06_H
 #include "base.h"
 
 

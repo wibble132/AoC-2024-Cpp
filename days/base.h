@@ -33,7 +33,7 @@ inline BaseDay::BaseDay(const int n) : day_number(n)
     input.assign(std::istreambuf_iterator(f), std::istreambuf_iterator<char>());
 }
 
-constexpr int iterations = 10;
+constexpr int iterations = 100;
 
 template <typename T> requires requires(const T& t)
 {
