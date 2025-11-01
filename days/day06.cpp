@@ -122,63 +122,6 @@ std::size_t Day06::part1() const
     return visited_positions.size();
 }
 
-bool does_loop(const input_t &input)
-{
-    position_t current_pos = input.guard_start;
-    direction_t current_dir = direction_t::Up;
-
-    std::set<std::tuple<position_t, direction_t>> visited_states{};
-    while (true)
-    {
-        visited_states.insert({current_pos, current_dir});
-
-        auto next = do_step(current_pos, current_dir, input);
-        if (visited_states.contains(next))
-        {
-            // Repeated a state, must be a loop
-            return true;
-        }
-
-        auto [next_pos, next_dir] = next;
-        if (!in_bounds(next_pos, input))
-        {
-            // Left the area, no loop
-            return false;
-        }
-
-        current_pos = next_pos;
-        current_dir = next_dir;
-    }
-}
-
-int part2_old(const std::string &in)
-{
-    auto input = parse_input(in);
-
-    int total = 0;
-
-    for (int x = 0; x < input.cols; ++x)
-    {
-        for (int y = 0; y < input.rows; ++y)
-        {
-            auto new_position = std::make_tuple(x, y);
-            if (input.obstacles.contains(new_position) || new_position == input.guard_start)
-            {
-                continue;
-            }
-
-            input.obstacles.insert(new_position);
-            if (does_loop(input))
-            {
-                total++;
-            }
-            input.obstacles.erase(new_position);
-        }
-    }
-
-    return total;
-}
-
 void do_step_to_wall(position_t &current_pos, direction_t &current_dir, const input_t &input)
 {
     position_t forward = forward_position(current_pos, current_dir);
