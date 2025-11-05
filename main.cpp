@@ -9,11 +9,11 @@
 
 int main()
 {
-    // run(Day01{});
-    // run(Day02{});
-    // run(Day03_1{});
-    // run(Day03_2{});
-    // run(Day05{});
-    // run(Day06{});
+    run(Day01{});
+    run(Day02{});
+    run(Day03_1{});
+    run(Day03_2{});
+    run(Day05{});
+    run(Day06{});
     run(Day07{});
 }
