@@ -1,4 +1,7 @@
 cmake-build-*
+build
 result
 inputs
 bin
+.vscode
+.direnv

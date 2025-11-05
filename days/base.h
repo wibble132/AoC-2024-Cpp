@@ -33,7 +33,7 @@ inline BaseDay::BaseDay(const int n) : day_number(n)
     input.assign(std::istreambuf_iterator(f), std::istreambuf_iterator<char>());
 }
 
-constexpr int iterations = 1000;
+constexpr int iterations = 10;
 
 template <typename T> requires requires(const T& t)
 {
@@ -83,7 +83,7 @@ concept RunnableDay = requires(const T& t)
     requires std::is_integral_v<decltype(t.day_number)>;
 };
 
-template <typename T> requires RunnableDay<T>
+template <RunnableDay T>
 void run(const T& day)
 {
     auto [p1_results, p2_results, p1_times, p2_times] = run_many(day);
