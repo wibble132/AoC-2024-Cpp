@@ -30,6 +30,8 @@ add_executable(
         days/day05.h
         days/day06.cpp
         days/day06.h
+        days/day07.cpp
+        days/day07.h
 )
 
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME}

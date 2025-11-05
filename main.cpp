@@ -5,13 +5,15 @@
 #include "days/day03.2.h"
 #include "days/day05.h"
 #include "days/day06.h"
+#include "days/day07.h"
 
 int main()
 {
-    run(Day01{});
-    run(Day02{});
-    run(Day03_1{});
-    run(Day03_2{});
-    run(Day05{});
-    run(Day06_2{});
+    // run(Day01{});
+    // run(Day02{});
+    // run(Day03_1{});
+    // run(Day03_2{});
+    // run(Day05{});
+    // run(Day06{});
+    run(Day07{});
 }

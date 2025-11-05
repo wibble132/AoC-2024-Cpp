@@ -176,7 +176,7 @@ namespace
     }
 }
 
-std::size_t Day06_2::part1() const
+std::size_t Day06::part1() const
 {
     const input_t input = parse_input(this->input);
 
@@ -231,7 +231,7 @@ bool does_loop(
     }
 }
 
-int Day06_2::part2() const
+int Day06::part2() const
 {
     auto input = parse_input(this->input);
 

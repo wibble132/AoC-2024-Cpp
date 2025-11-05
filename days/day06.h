@@ -3,10 +3,10 @@
 #include "base.h"
 
 
-class Day06_2 final : public BaseDay
+class Day06 final : public BaseDay
 {
 public:
-    explicit Day06_2() : BaseDay(6)
+    explicit Day06() : BaseDay(6)
     {
     }
 
